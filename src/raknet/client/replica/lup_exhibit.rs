@@ -4,8 +4,8 @@ use endio::Serialize;
 use endio_bit::BEBitWriter;
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
-use crate::world::Lot;
 use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization};
+use crate::world::Lot;
 
 #[derive(BitVariantTests, Debug, PartialEq, ReplicaSerde)]
 pub struct LupExhibitConstruction {

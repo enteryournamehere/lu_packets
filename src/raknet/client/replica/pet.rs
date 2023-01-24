@@ -4,9 +4,9 @@ use endio::{Deserialize, Serialize};
 use endio_bit::BEBitWriter;
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
+use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization};
 use crate::common::{LuVarWString, ObjId};
 use crate::world::gm::client::{PetAbilityType, PetModerationStatus};
-use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization};
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[repr(u8)]

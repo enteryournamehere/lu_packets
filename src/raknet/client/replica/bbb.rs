@@ -4,8 +4,8 @@ use endio::Serialize;
 use endio_bit::BEBitWriter;
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
-use crate::common::ObjId;
 use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization};
+use crate::common::ObjId;
 
 #[derive(BitVariantTests, Debug, PartialEq, ReplicaSerde)]
 pub struct BbbConstruction {

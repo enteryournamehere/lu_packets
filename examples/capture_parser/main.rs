@@ -2,20 +2,20 @@ mod zip_context;
 
 use std::collections::HashMap;
 use std::env;
-use std::io::{BufReader, Result as Res};
 use std::fs;
 use std::fs::File;
+use std::io::{BufReader, Result as Res};
 use std::path::Path;
 use std::time::Instant;
 
+use self::zip_context::ZipContext;
 use lu_packets::{
-	auth::server::Message as AuthServerMessage, auth::client::Message as AuthClientMessage,
-	world::Lot, world::server::Message as WorldServerMessage,
-	world::client::Message as WorldClientMessage,
+	auth::client::Message as AuthClientMessage, auth::server::Message as AuthServerMessage,
+	world::client::Message as WorldClientMessage, world::server::Message as WorldServerMessage,
+	world::Lot,
 };
 use rusqlite::{params, Connection};
 use zip::ZipArchive;
-use self::zip_context::ZipContext;
 
 static mut PRINT_PACKETS: bool = false;
 

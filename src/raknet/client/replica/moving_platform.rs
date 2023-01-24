@@ -1,13 +1,13 @@
 use std::io::{Read, Result as Res, Write};
 
-use endio::{Deserialize, LE, Serialize};
+use endio::{Deserialize, Serialize, LE};
 use endio_bit::{BEBitReader, BEBitWriter};
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
+use super::simple_physics::PositionRotationInfo;
+use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization, ReplicaD};
 use crate::common::LuVarWString;
 use crate::world::Vector3;
-use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization, ReplicaD};
-use super::simple_physics::PositionRotationInfo;
 
 #[derive(Debug, PartialEq, ReplicaSerde)]
 pub struct PlatformMoverInfo {

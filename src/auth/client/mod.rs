@@ -1,13 +1,13 @@
 //! Client-received auth messages.
-use std::io::{Error, ErrorKind::InvalidData, Result as Res, Read};
+use std::io::{Error, ErrorKind::InvalidData, Read, Result as Res};
 
-use endio::{LEWrite, LERead, Deserialize, Serialize};
 use endio::LittleEndian as LE;
+use endio::{Deserialize, LERead, LEWrite, Serialize};
 use lu_packets_derive::MessageFromVariants;
 use lu_packets_derive::VariantTests;
 
 use crate::common::{LuString3, LuString33, LuString37, LuVarWString, LuWString33, ServiceId};
-use crate::general::client::{DisconnectNotify, Handshake, GeneralMessage};
+use crate::general::client::{DisconnectNotify, GeneralMessage, Handshake};
 use crate::world::server::Language;
 
 /// All messages that can be received by a client from an auth server.

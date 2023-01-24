@@ -6,7 +6,7 @@ use std::fmt::{Debug, Formatter, Result as FmtResult};
 use std::io::{Error, ErrorKind::InvalidData, Read, Result as Res, Write};
 use std::ops::{Index, IndexMut};
 
-use endio::{Deserialize, LE, LERead, LEWrite, Serialize};
+use endio::{Deserialize, LERead, LEWrite, Serialize, LE};
 use lu_packets_derive::GmParam;
 
 struct Amf3Reader<'a, R: Read> {
@@ -412,8 +412,8 @@ impl TryFrom<&str> for Amf3 {
 
 #[cfg(test)]
 mod tests {
-	use endio::{LERead, LEWrite};
 	use super::U29;
+	use endio::{LERead, LEWrite};
 
 	#[test]
 	fn test_u29() {

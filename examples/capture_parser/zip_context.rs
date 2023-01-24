@@ -5,7 +5,6 @@ use endio_bit::BEBitReader;
 use lu_packets::{
 	lu,
 	raknet::client::replica::{
-		ComponentConstruction, ComponentSerialization, ReplicaContext,
 		achievement_vendor::{AchievementVendorConstruction, AchievementVendorSerialization},
 		base_combat_ai::{BaseCombatAiConstruction, BaseCombatAiSerialization},
 		bbb::{BbbConstruction, BbbSerialization},
@@ -14,8 +13,8 @@ use lu_packets::{
 		character::{CharacterConstruction, CharacterSerialization},
 		collectible::{CollectibleConstruction, CollectibleSerialization},
 		controllable_physics::{ControllablePhysicsConstruction, ControllablePhysicsSerialization},
-		donation_vendor::{DonationVendorConstruction, DonationVendorSerialization},
 		destroyable::{DestroyableConstruction, DestroyableSerialization},
+		donation_vendor::{DonationVendorConstruction, DonationVendorSerialization},
 		fx::FxConstruction,
 		inventory::{InventoryConstruction, InventorySerialization},
 		item::{ItemConstruction, ItemSerialization},
@@ -26,11 +25,11 @@ use lu_packets::{
 		mutable_model_behavior::{
 			MutableModelBehaviorConstruction, MutableModelBehaviorSerialization,
 		},
+		pet::{PetConstruction, PetSerialization},
 		phantom_physics::{PhantomPhysicsConstruction, PhantomPhysicsSerialization},
 		player_forced_movement::{
 			PlayerForcedMovementConstruction, PlayerForcedMovementSerialization,
 		},
-		pet::{PetConstruction, PetSerialization},
 		possessable::{PossessableConstruction, PossessableSerialization},
 		possession_control::{PossessionControlConstruction, PossessionControlSerialization},
 		quickbuild::{QuickbuildConstruction, QuickbuildSerialization},
@@ -46,8 +45,9 @@ use lu_packets::{
 		switch::{SwitchConstruction, SwitchSerialization},
 		vehicle_physics::{VehiclePhysicsConstruction, VehiclePhysicsSerialization},
 		vendor::{VendorConstruction, VendorSerialization},
+		ComponentConstruction, ComponentSerialization, ReplicaContext,
 	},
-	world::{Lot, LuNameValue, LnvValue},
+	world::{LnvValue, Lot, LuNameValue},
 };
 use zip::read::ZipFile;
 

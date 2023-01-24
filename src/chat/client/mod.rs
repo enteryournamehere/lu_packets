@@ -1,9 +1,9 @@
 use endio::{Deserialize, Serialize};
 use lu_packets_derive::{MessageFromVariants, VariantTests};
 
+pub use super::{GeneralChatMessage, PrivateChatMessage};
 use crate::common::{LuWString33, ObjId};
 use crate::world::client::Message;
-pub use super::{GeneralChatMessage, PrivateChatMessage};
 
 #[derive(Debug, Deserialize, PartialEq, Serialize, MessageFromVariants, VariantTests)]
 #[non_exhaustive]

@@ -4,10 +4,10 @@ use endio::Serialize;
 use endio_bit::BEBitWriter;
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
-use crate::common::{LVec, ObjId};
-use crate::world::{LuNameValue, Lot, Quaternion, Vector3};
-use crate::world::gm::InventoryType;
 use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization};
+use crate::common::{LVec, ObjId};
+use crate::world::gm::InventoryType;
+use crate::world::{Lot, LuNameValue, Quaternion, Vector3};
 
 #[derive(Debug, PartialEq, ReplicaSerde)]
 pub struct EquippedItemInfo {

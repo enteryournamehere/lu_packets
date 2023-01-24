@@ -1,12 +1,12 @@
-use std::io::{Result as Res};
+use std::io::Result as Res;
 
 use endio::{Deserialize, Serialize};
 use endio_bit::BEBitWriter;
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
-use crate::world::{Vector3, Quaternion};
+use super::controllable_physics::LocalSpaceInfo;
 use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization};
-use super::controllable_physics::{LocalSpaceInfo};
+use crate::world::{Quaternion, Vector3};
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[repr(u8)]

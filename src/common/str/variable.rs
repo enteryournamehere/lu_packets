@@ -1,8 +1,8 @@
-use std::convert::{TryFrom};
+use std::convert::TryFrom;
 use std::marker::PhantomData;
 
-use crate::common::LVec;
 use super::{AsciiChar, AsciiError, LuStrExt, LuWStr, Ucs2Char, Ucs2Error};
+use crate::common::LVec;
 
 pub type LuVarString<L> = LVec<L, AsciiChar>;
 pub type LuVarWString<L> = LVec<L, Ucs2Char>;

@@ -1,21 +1,21 @@
 //! Server-received world messages.
 pub mod mail;
 
-use std::io::{Read, Write};
 use std::io::Result as Res;
+use std::io::{Read, Write};
 
-use endio::{Deserialize, LERead, LEWrite, Serialize};
 use endio::LittleEndian as LE;
+use endio::{Deserialize, LERead, LEWrite, Serialize};
 use endio_bit::{BEBitReader, BEBitWriter};
 use lu_packets_derive::VariantTests;
 
-use crate::common::{ObjId, LuVarWString, LuWString33, LuWString42, ServiceId};
-use crate::chat::ChatChannel;
-use crate::chat::server::ChatMessage;
-use crate::raknet::client::replica::controllable_physics::FrameStats;
-use super::ZoneId;
-use super::gm::server::SubjectGameMessage;
 use self::mail::Mail;
+use super::gm::server::SubjectGameMessage;
+use super::ZoneId;
+use crate::chat::server::ChatMessage;
+use crate::chat::ChatChannel;
+use crate::common::{LuVarWString, LuWString33, LuWString42, ObjId, ServiceId};
+use crate::raknet::client::replica::controllable_physics::FrameStats;
 
 pub use crate::general::server::GeneralMessage;
 

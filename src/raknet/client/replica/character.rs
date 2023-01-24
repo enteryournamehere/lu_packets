@@ -1,11 +1,11 @@
 use std::io::{Error, ErrorKind::InvalidData, Read, Result as Res, Write};
 
-use endio::{Deserialize, LE, LERead, LEWrite, Serialize};
+use endio::{Deserialize, LERead, LEWrite, Serialize, LE};
 use endio_bit::{BEBitReader, BEBitWriter};
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
-use crate::common::{LuVarWString, ObjId};
 use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization};
+use crate::common::{LuVarWString, ObjId};
 
 #[derive(Debug, PartialEq)]
 pub enum TransitionState {

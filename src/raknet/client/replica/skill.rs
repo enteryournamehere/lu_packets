@@ -4,8 +4,8 @@ use endio::Serialize;
 use endio_bit::BEBitWriter;
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
-use crate::common::{LVec, ObjId};
 use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization};
+use crate::common::{LVec, ObjId};
 
 #[derive(Debug, PartialEq, ReplicaSerde)]
 pub struct BehaviorInfo {

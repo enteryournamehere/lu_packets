@@ -1,8 +1,8 @@
 use std::convert::TryFrom;
-use std::io::{Read, Write};
 use std::io::Result as Res;
+use std::io::{Read, Write};
 
-use endio::{Deserialize, LE, Serialize};
+use endio::{Deserialize, Serialize, LE};
 
 use super::{AbstractLuStr, AsciiChar, AsciiError, LuChar, LuStrExt, Ucs2Char, Ucs2Error};
 

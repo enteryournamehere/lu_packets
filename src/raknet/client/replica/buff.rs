@@ -1,11 +1,11 @@
 use std::io::{Read, Result as Res, Write};
 
-use endio::{Deserialize, LE, LERead, LEWrite, Serialize};
+use endio::{Deserialize, LERead, LEWrite, Serialize, LE};
 use endio_bit::{BEBitReader, BEBitWriter};
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
+use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization, ReplicaD};
 use crate::common::{LVec, ObjId};
-use super::{ReplicaD, ComponentConstruction, ComponentProtocol, ComponentSerialization};
 
 // so close to being able to do serialization automatically...if not for the irregularity with `added_by_teammate`...
 #[derive(Debug, PartialEq)]

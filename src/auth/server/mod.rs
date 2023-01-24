@@ -2,7 +2,7 @@
 use endio::{Deserialize, Serialize};
 use lu_packets_derive::VariantTests;
 
-use crate::common::{LuWString33, LuWString41, LuWString128, LuWString256, ServiceId};
+use crate::common::{LuWString128, LuWString256, LuWString33, LuWString41, ServiceId};
 pub use crate::general::server::GeneralMessage;
 
 /// All messages that can be received by an auth server.

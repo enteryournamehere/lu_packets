@@ -1,17 +1,17 @@
 //! Client-received world messages.
-use std::io::{Error, ErrorKind::InvalidData, Read, Write};
 use std::io::Result as Res;
+use std::io::{Error, ErrorKind::InvalidData, Read, Write};
 
-use endio::{Deserialize, LERead, LEWrite, Serialize};
 use endio::LittleEndian as LE;
+use endio::{Deserialize, LERead, LEWrite, Serialize};
 use lu_packets_derive::{MessageFromVariants, VariantTests};
 
-use crate::chat::ChatChannel;
-use crate::chat::client::ChatMessage;
-use crate::common::{ObjId, LuString33, LuWString33, LuWString42, LVec, ServiceId};
-use crate::general::client::{DisconnectNotify, Handshake, GeneralMessage};
-use super::{Lot, lnv::LuNameValue, Vector3, ZoneId};
 use super::gm::client::SubjectGameMessage;
+use super::{lnv::LuNameValue, Lot, Vector3, ZoneId};
+use crate::chat::client::ChatMessage;
+use crate::chat::ChatChannel;
+use crate::common::{LVec, LuString33, LuWString33, LuWString42, ObjId, ServiceId};
+use crate::general::client::{DisconnectNotify, GeneralMessage, Handshake};
 
 /// All messages that can be received by a client from a world server.
 pub type Message = crate::raknet::client::Message<LuMessage>;

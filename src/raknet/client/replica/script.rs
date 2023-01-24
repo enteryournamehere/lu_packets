@@ -4,8 +4,8 @@ use endio::Serialize;
 use endio_bit::BEBitWriter;
 use lu_packets_derive::{BitVariantTests, ReplicaSerde};
 
-use crate::world::LuNameValue;
 use super::{ComponentConstruction, ComponentProtocol, ComponentSerialization};
+use crate::world::LuNameValue;
 
 #[derive(BitVariantTests, Debug, PartialEq, ReplicaSerde)]
 pub struct ScriptConstruction {
