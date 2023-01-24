@@ -41,7 +41,7 @@ impl From<DisconnectNotify> for Message {
 
 /// All client-received auth messages.
 #[derive(Debug, MessageFromVariants, PartialEq, Serialize, Deserialize)]
-#[post_disc_padding=1]
+#[post_disc_padding = 1]
 #[repr(u32)]
 pub enum ClientMessage {
 	LoginResponse(LoginResponse),
@@ -73,7 +73,16 @@ pub enum LoginResponse {
 	/// The login was successful.
 	Ok {
 		// Strings used for event gating.
-		events: (LuString33, LuString33, LuString33, LuString33, LuString33, LuString33, LuString33, LuString33),
+		events: (
+			LuString33,
+			LuString33,
+			LuString33,
+			LuString33,
+			LuString33,
+			LuString33,
+			LuString33,
+			LuString33,
+		),
 		/// Used for version gating.
 		version: (u16, u16, u16),
 		/// The session key to be used for authenticating with world servers (to be passed in [`ClientValidation::session_key`](crate::world::server::ClientValidation::session_key)).
@@ -195,9 +204,25 @@ impl<R: Read + LERead> Deserialize<LE, R> for LoginResponse {
 		let disc = LERead::read::<u8>(reader)?;
 		match disc {
 			1 => {
-				let events: (LuString33, LuString33, LuString33, LuString33, LuString33, LuString33, LuString33, LuString33) 
-					= (LERead::read(reader)?, LERead::read(reader)?, LERead::read(reader)?, LERead::read(reader)?, 
-					LERead::read(reader)?, LERead::read(reader)?, LERead::read(reader)?, LERead::read(reader)?);
+				let events: (
+					LuString33,
+					LuString33,
+					LuString33,
+					LuString33,
+					LuString33,
+					LuString33,
+					LuString33,
+					LuString33,
+				) = (
+					LERead::read(reader)?,
+					LERead::read(reader)?,
+					LERead::read(reader)?,
+					LERead::read(reader)?,
+					LERead::read(reader)?,
+					LERead::read(reader)?,
+					LERead::read(reader)?,
+					LERead::read(reader)?,
+				);
 				let version: (u16, u16, u16) = (
 					LERead::read(reader)?,
 					LERead::read(reader)?,

@@ -79,7 +79,10 @@ impl<R: Read> Deserialize<LE, BEBitReader<R>> for MovingPlatformConstruction {
 		} else {
 			None
 		};
-		Ok(Self { path_info, subcomponent_infos })
+		Ok(Self {
+			path_info,
+			subcomponent_infos,
+		})
 	}
 }
 

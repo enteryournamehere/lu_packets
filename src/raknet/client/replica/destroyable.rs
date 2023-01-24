@@ -49,6 +49,7 @@ pub struct StatsInfo {
 }
 
 impl<R: Read> Deserialize<LE, BEBitReader<R>> for StatsInfo {
+	#[rustfmt::skip]
 	fn deserialize(reader: &mut BEBitReader<R>) -> Res<Self> {
 		let cur_health = LERead::read(reader)?;
 		let max_health = LERead::read(reader)?;
@@ -73,23 +74,23 @@ impl<R: Read> Deserialize<LE, BEBitReader<R>> for StatsInfo {
 			None
 		};
 		Ok(Self {
-				cur_health,
-				max_health,
-				cur_armor,
-				max_armor,
-				cur_imag,
-				max_imag,
-				damage_absorption_points,
-				immunity,
-				is_gm_immune,
-				is_shielded,
-				actual_max_health,
-				actual_max_armor,
-				actual_max_imag,
-				factions,
-				is_dead,
-				is_smashed,
-				smashable_info,
+			cur_health,
+			max_health,
+			cur_armor,
+			max_armor,
+			cur_imag,
+			max_imag,
+			damage_absorption_points,
+			immunity,
+			is_gm_immune,
+			is_shielded,
+			actual_max_health,
+			actual_max_armor,
+			actual_max_imag,
+			factions,
+			is_dead,
+			is_smashed,
+			smashable_info,
 		})
 	}
 }

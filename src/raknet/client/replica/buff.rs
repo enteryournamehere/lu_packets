@@ -46,19 +46,19 @@ impl<R: Read> Deserialize<LE, BEBitReader<R>> for BuffInfo {
 		};
 		let ref_count = LERead::read(reader)?;
 		Ok(Self {
-				buff_id,
-				time_left,
-				cancel_on_death,
-				cancel_on_zone,
-				cancel_on_damaged,
-				cancel_on_remove_buff,
-				cancel_on_ui,
-				cancel_on_logout,
-				cancel_on_unequip,
-				cancel_on_damage_absorb_ran_out,
-				added_by_teammate,
-				apply_on_teammates,
-				ref_count,
+			buff_id,
+			time_left,
+			cancel_on_death,
+			cancel_on_zone,
+			cancel_on_damaged,
+			cancel_on_remove_buff,
+			cancel_on_ui,
+			cancel_on_logout,
+			cancel_on_unequip,
+			cancel_on_damage_absorb_ran_out,
+			added_by_teammate,
+			apply_on_teammates,
+			ref_count,
 		})
 	}
 }
@@ -91,8 +91,7 @@ pub struct BuffConstruction {
 }
 
 #[derive(BitVariantTests, Debug, PartialEq, ReplicaSerde)]
-pub struct BuffSerialization {
-}
+pub struct BuffSerialization {}
 
 impl ComponentConstruction for BuffConstruction {
 	fn ser(&self, writer: &mut BEBitWriter<Vec<u8>>) -> Res<()> {

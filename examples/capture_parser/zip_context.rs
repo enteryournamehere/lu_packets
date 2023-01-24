@@ -23,15 +23,21 @@ use lu_packets::{
 		lup_exhibit::{LupExhibitConstruction, LupExhibitSerialization},
 		module_assembly::ModuleAssemblyConstruction,
 		moving_platform::{MovingPlatformConstruction, MovingPlatformSerialization},
-		mutable_model_behavior::{MutableModelBehaviorConstruction, MutableModelBehaviorSerialization},
+		mutable_model_behavior::{
+			MutableModelBehaviorConstruction, MutableModelBehaviorSerialization,
+		},
 		phantom_physics::{PhantomPhysicsConstruction, PhantomPhysicsSerialization},
-		player_forced_movement::{PlayerForcedMovementConstruction, PlayerForcedMovementSerialization},
+		player_forced_movement::{
+			PlayerForcedMovementConstruction, PlayerForcedMovementSerialization,
+		},
 		pet::{PetConstruction, PetSerialization},
 		possessable::{PossessableConstruction, PossessableSerialization},
 		possession_control::{PossessionControlConstruction, PossessionControlSerialization},
 		quickbuild::{QuickbuildConstruction, QuickbuildSerialization},
 		racing_control::{RacingControlConstruction, RacingControlSerialization},
-		rigid_body_phantom_physics::{RigidBodyPhantomPhysicsConstruction, RigidBodyPhantomPhysicsSerialization},
+		rigid_body_phantom_physics::{
+			RigidBodyPhantomPhysicsConstruction, RigidBodyPhantomPhysicsSerialization,
+		},
 		script::ScriptConstruction,
 		scripted_activity::{ScriptedActivityConstruction, ScriptedActivitySerialization},
 		shooting_gallery::{ShootingGalleryConstruction, ShootingGallerySerialization},
@@ -47,7 +53,10 @@ use zip::read::ZipFile;
 
 use super::Cdclient;
 
-const COMP_ORDER: [u32; 35] = [108, 61, 1, 30, 20, 3, 40, 98, 7, 110, 109, 106, 4, 26, 17, 5, 9, 60, 11, 48, 25, 16, 100, 102, 19, 39, 23, 75, 42, 6, 49, 2, 44, 71, 107];
+const COMP_ORDER: [u32; 35] = [
+	108, 61, 1, 30, 20, 3, 40, 98, 7, 110, 109, 106, 4, 26, 17, 5, 9, 60, 11, 48, 25, 16, 100, 102,
+	19, 39, 23, 75, 42, 6, 49, 2, 44, 71, 107,
+];
 
 pub struct ZipContext<'a> {
 	pub zip: ZipFile<'a>,
@@ -60,12 +69,10 @@ impl ZipContext<'_> {
 	fn apply_whitelist(comps: &mut Vec<u32>, config: &Option<LuNameValue>) {
 		if let Some(conf) = config {
 			if let Some(LnvValue::I32(1)) = conf.get(&lu!("componentWhitelist")) {
-				comps.retain(|&x|
-					match x  {
-						1 | 2 | 3 | 7 | 10 | 11 | 24 | 42 => true,
-						_ => false,
-					}
-				);
+				comps.retain(|&x| match x {
+					1 | 2 | 3 | 7 | 10 | 11 | 24 | 42 => true,
+					_ => false,
+				});
 			}
 		}
 	}
@@ -95,15 +102,23 @@ impl ZipContext<'_> {
 		for comp in comps {
 			// special case: utter bodge
 			match comp {
-				2  => { final_comps.push(44); }
-				4  => { final_comps.push(110); final_comps.push(109); final_comps.push(106); }
-				7  => { final_comps.push(98); }
+				2 => {
+					final_comps.push(44);
+				}
+				4 => {
+					final_comps.push(110);
+					final_comps.push(109);
+					final_comps.push(106);
+				}
+				7 => {
+					final_comps.push(98);
+				}
 				23 | 48 => {
 					if !final_comps.contains(&7) {
 						final_comps.push(7);
 					}
 				}
-				_ => {},
+				_ => {}
 			}
 			final_comps.push(*comp);
 		}
@@ -114,11 +129,15 @@ impl ZipContext<'_> {
 		}
 	}
 
-	fn map_constrs<R: std::io::Read>(comps: &Vec<u32>) -> Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentConstruction>>> {
+	fn map_constrs<R: std::io::Read>(
+		comps: &Vec<u32>,
+	) -> Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentConstruction>>> {
 		use endio::Deserialize;
 
-		let mut constrs: Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentConstruction>>> = vec![];
+		let mut constrs: Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentConstruction>>> =
+			vec![];
 		for comp in comps {
+			#[rustfmt::skip]
 			match comp {
 				1  =>  { constrs.push(|x| Ok(Box::new(ControllablePhysicsConstruction::deserialize(x)?))); }
 				3  =>  { constrs.push(|x| Ok(Box::new(SimplePhysicsConstruction::deserialize(x)?))); }
@@ -170,7 +189,12 @@ impl std::io::Read for ZipContext<'_> {
 
 // hacky hardcoded components to be able to read player replicas without DB lookup
 impl ReplicaContext for ZipContext<'_> {
-	fn get_comp_constructions<R: std::io::Read>(&mut self, network_id: u16, lot: Lot, config: &Option<LuNameValue>) -> Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentConstruction>>> {
+	fn get_comp_constructions<R: std::io::Read>(
+		&mut self,
+		network_id: u16,
+		lot: Lot,
+		config: &Option<LuNameValue>,
+	) -> Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentConstruction>>> {
 		let mut comps = self.cdclient.get_comps(lot).clone();
 
 		Self::apply_whitelist(&mut comps, config);
@@ -186,12 +210,17 @@ impl ReplicaContext for ZipContext<'_> {
 		constrs
 	}
 
-	fn get_comp_serializations<R: std::io::Read>(&mut self, network_id: u16) -> Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentSerialization>>> {
+	fn get_comp_serializations<R: std::io::Read>(
+		&mut self,
+		network_id: u16,
+	) -> Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentSerialization>>> {
 		use endio::Deserialize;
 
 		if let Some(comps) = self.comps.get(&network_id) {
-			let mut sers: Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentSerialization>>> = vec![];
+			let mut sers: Vec<fn(&mut BEBitReader<R>) -> Res<Box<dyn ComponentSerialization>>> =
+				vec![];
 			for comp in comps {
+				#[rustfmt::skip]
 				match comp {
 					1   => { sers.push(|x| Ok(Box::new(ControllablePhysicsSerialization::deserialize(x)?))); }
 					3   => { sers.push(|x| Ok(Box::new(SimplePhysicsSerialization::deserialize(x)?))); }

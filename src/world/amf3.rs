@@ -84,11 +84,13 @@ impl<'a, W: Write> Serialize<LE, W> for &'a U29 {
 			LEWrite::write(writer, v as u8 & 0x7f)
 		} else if v <= 0x1fffff {
 			LEWrite::write(writer, (v >> 14) as u8 | 0x80)?;
+			#[rustfmt::skip]
 			LEWrite::write(writer, (v >> 7 ) as u8 | 0x80)?;
 			LEWrite::write(writer, v as u8 & 0x7f)
 		} else {
 			LEWrite::write(writer, (v >> 22) as u8 | 0x80)?;
 			LEWrite::write(writer, (v >> 15) as u8 | 0x80)?;
+			#[rustfmt::skip]
 			LEWrite::write(writer, (v >> 8 ) as u8 | 0x80)?;
 			LEWrite::write(writer, v as u8)
 		}
@@ -136,7 +138,7 @@ impl<R: Read> Deserialize<LE, Amf3Reader<'_, R>> for Amf3String {
 			let index = value;
 			match reader.string_ref_table.get(index as usize) {
 				Some(x) => x.0.clone(),
-				None => { return Err(Error::new(InvalidData, "invalid reference index")) }
+				None => return Err(Error::new(InvalidData, "invalid reference index")),
 			}
 		} else {
 			let length = value;
@@ -146,7 +148,7 @@ impl<R: Read> Deserialize<LE, Amf3Reader<'_, R>> for Amf3String {
 
 			let string = match String::from_utf8(vec) {
 				Ok(x) => x,
-				Err(_) => { return Err(Error::new(InvalidData, "string is not valid utf8")) }
+				Err(_) => return Err(Error::new(InvalidData, "string is not valid utf8")),
 			};
 			if string != "" {
 				reader.string_ref_table.push(Self(string.clone()));
@@ -192,7 +194,10 @@ pub struct Amf3Array {
 
 impl Amf3Array {
 	pub fn new() -> Self {
-		Self { map: HashMap::new(), vec: vec![] }
+		Self {
+			map: HashMap::new(),
+			vec: vec![],
+		}
 	}
 }
 
@@ -209,7 +214,11 @@ impl Debug for Amf3Array {
 		} else if map_empty && vec_empty {
 			write!(f, "amf3! {{}}")
 		} else {
-			write!(f, "Amf3Array {{ map: {:?}, vec: {:?} }}", self.map, self.vec)
+			write!(
+				f,
+				"Amf3Array {{ map: {:?}, vec: {:?} }}",
+				self.map, self.vec
+			)
 		}
 	}
 }
@@ -249,7 +258,9 @@ impl<R: Read> Deserialize<LE, Amf3Reader<'_, R>> for Amf3Array {
 		let length_and_is_inline: U29 = LERead::read(reader)?;
 		let is_inline = length_and_is_inline.0 & 0x01 == 1;
 		let length = length_and_is_inline.0 >> 1;
-		if !is_inline { todo!() }
+		if !is_inline {
+			todo!()
+		}
 		let mut map = HashMap::new();
 		loop {
 			let key: Amf3String = LERead::read(reader)?;
@@ -308,6 +319,7 @@ pub enum Amf3 {
 }
 
 impl Debug for Amf3 {
+	#[rustfmt::skip]
 	fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
 		match self {
 			Self::False     => write!(f, "false"),
@@ -321,7 +333,10 @@ impl Debug for Amf3 {
 
 impl<R: Read> Deserialize<LE, R> for Amf3 {
 	fn deserialize(reader: &mut R) -> Res<Self> {
-		let mut reader = Amf3Reader { inner: reader, string_ref_table: vec![] };
+		let mut reader = Amf3Reader {
+			inner: reader,
+			string_ref_table: vec![],
+		};
 		deser_amf3(&mut reader)
 	}
 }
@@ -333,18 +348,28 @@ fn deser_amf3<R: Read>(reader: &mut Amf3Reader<R>) -> Res<Amf3> {
 		3 => Amf3::True,
 		5 => Amf3::Double(LERead::read(reader)?),
 		6 => Amf3::String(LERead::read(reader)?),
+		#[rustfmt::skip]
 		9 => Amf3::Array (LERead::read(reader)?),
-		_ => { return Err(Error::new(InvalidData, format!("invalid discriminant value for Amf3: {}", disc))) }
+		_ => {
+			return Err(Error::new(
+				InvalidData,
+				format!("invalid discriminant value for Amf3: {}", disc),
+			))
+		}
 	})
 }
 
 impl<'a, W: Write> Serialize<LE, W> for &'a Amf3 {
 	fn serialize(self, writer: &mut W) -> Res<()> {
-		let mut writer = Amf3Writer { inner: writer, string_ref_table: vec![] };
+		let mut writer = Amf3Writer {
+			inner: writer,
+			string_ref_table: vec![],
+		};
 		ser_amf3(&mut writer, self)
 	}
 }
 
+#[rustfmt::skip]
 fn ser_amf3<W: Write>(writer: &mut Amf3Writer<W>, amf3: &Amf3) -> Res<()> {
 	match amf3 {
 		Amf3::False     =>   LEWrite::write(writer, 2u8),
@@ -357,7 +382,11 @@ fn ser_amf3<W: Write>(writer: &mut Amf3Writer<W>, amf3: &Amf3) -> Res<()> {
 
 impl From<bool> for Amf3 {
 	fn from(b: bool) -> Self {
-		if b { Self::True } else { Self::False }
+		if b {
+			Self::True
+		} else {
+			Self::False
+		}
 	}
 }
 
@@ -388,7 +417,14 @@ mod tests {
 
 	#[test]
 	fn test_u29() {
-		for (bytes, integer) in &[(&b"\x7f"[..], 0x7f), (&b"\xa2\x43"[..], 4419), (&b"\x88\x00"[..], 1024), (&b"\xff\xff\x7e"[..], 0x1ffffe), (&b"\x80\xc0\x80\x00"[..], 0x200000), (&b"\xbf\xff\xff\xfe"[..], 0xffffffe)] {
+		for (bytes, integer) in &[
+			(&b"\x7f"[..], 0x7f),
+			(&b"\xa2\x43"[..], 4419),
+			(&b"\x88\x00"[..], 1024),
+			(&b"\xff\xff\x7e"[..], 0x1ffffe),
+			(&b"\x80\xc0\x80\x00"[..], 0x200000),
+			(&b"\xbf\xff\xff\xfe"[..], 0xffffffe),
+		] {
 			let mut reader = &bytes[..];
 			let val: U29 = reader.read().unwrap();
 			assert_eq!(val.0, *integer);

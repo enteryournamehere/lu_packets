@@ -48,12 +48,15 @@ pub struct GeneralChatMessage {
 	pub message: LuVarWString<u32>,
 }
 
-impl<R: Read+LERead> Deserialize<LE, R> for GeneralChatMessage
-	where   u8: Deserialize<LE, R>,
-	       u16: Deserialize<LE, R>,
-	       u32: Deserialize<LE, R>,
-	  LuWString33: Deserialize<LE, R>,
-	     ObjId: Deserialize<LE, R> {
+impl<R: Read + LERead> Deserialize<LE, R> for GeneralChatMessage
+where
+	u8: Deserialize<LE, R>,
+	u16: Deserialize<LE, R>,
+	u32: Deserialize<LE, R>,
+	LuWString33: Deserialize<LE, R>,
+	ObjId: Deserialize<LE, R>,
+{
+	#[rustfmt::skip]
 	fn deserialize(reader: &mut R) -> Res<Self> {
 		let chat_channel     = LERead::read(reader)?;
 		let mut str_len: u32 = LERead::read(reader)?;
@@ -66,16 +69,25 @@ impl<R: Read+LERead> Deserialize<LE, R> for GeneralChatMessage
 		let sender_gm_level  = LERead::read(reader)?;
 		let message = LuVarWString::deser_content(reader, str_len)?;
 		let _: u16           = LERead::read(reader)?;
-		Ok(Self { chat_channel, sender_name, sender, source_id, sender_gm_level, message })
+		Ok(Self {
+			chat_channel,
+			sender_name,
+			sender,
+			source_id,
+			sender_gm_level,
+			message,
+		})
 	}
 }
 
-impl<'a, W: Write+LEWrite> Serialize<LE, W> for &'a GeneralChatMessage
-	where       u8: Serialize<LE, W>,
-	           u16: Serialize<LE, W>,
-	           u32: Serialize<LE, W>,
-	  &'a LuWString33: Serialize<LE, W>,
-	         ObjId: Serialize<LE, W> {
+impl<'a, W: Write + LEWrite> Serialize<LE, W> for &'a GeneralChatMessage
+where
+	u8: Serialize<LE, W>,
+	u16: Serialize<LE, W>,
+	u32: Serialize<LE, W>,
+	&'a LuWString33: Serialize<LE, W>,
+	ObjId: Serialize<LE, W>,
+{
 	fn serialize(self, writer: &mut W) -> Res<()> {
 		LEWrite::write(writer, &self.chat_channel)?;
 		let mut str_len = self.message.len();
@@ -117,16 +129,19 @@ pub struct PrivateChatMessage {
 	pub message: LuVarWString<u32>,
 }
 
-impl<R: Read+LERead> Deserialize<LE, R> for PrivateChatMessage
-	where   u8: Deserialize<LE, R>,
-	       u16: Deserialize<LE, R>,
-	       u32: Deserialize<LE, R>,
-	  LuWString33: Deserialize<LE, R>,
-	     ObjId: Deserialize<LE, R>,
-	  PrivateChatMessageResponseCode: Deserialize<LE, R> {
+impl<R: Read + LERead> Deserialize<LE, R> for PrivateChatMessage
+where
+	u8: Deserialize<LE, R>,
+	u16: Deserialize<LE, R>,
+	u32: Deserialize<LE, R>,
+	LuWString33: Deserialize<LE, R>,
+	ObjId: Deserialize<LE, R>,
+	PrivateChatMessageResponseCode: Deserialize<LE, R>,
+{
+	#[rustfmt::skip]
 	fn deserialize(reader: &mut R) -> Res<Self> {
 		let chat_channel       = LERead::read(reader)?;
-		let mut str_len: u32       = LERead::read(reader)?;
+		let mut str_len: u32   = LERead::read(reader)?;
 		str_len -= 1;
 		let sender_name        = LERead::read(reader)?;
 		let sender             = LERead::read(reader)?;
@@ -137,16 +152,28 @@ impl<R: Read+LERead> Deserialize<LE, R> for PrivateChatMessage
 		let response_code      = LERead::read(reader)?;
 		let message = LuVarWString::deser_content(reader, str_len)?;
 		let _: u16             = LERead::read(reader)?;
-		Ok(Self { chat_channel, sender_name, sender, source_id, sender_gm_level, recipient_name, recipient_gm_level, response_code, message })
+		Ok(Self {
+			chat_channel,
+			sender_name,
+			sender,
+			source_id,
+			sender_gm_level,
+			recipient_name,
+			recipient_gm_level,
+			response_code,
+			message,
+		})
 	}
 }
-impl<'a, W: Write+LEWrite> Serialize<LE, W> for &'a PrivateChatMessage
-	where       u8: Serialize<LE, W>,
-	           u16: Serialize<LE, W>,
-	           u32: Serialize<LE, W>,
-	  &'a LuWString33: Serialize<LE, W>,
-	         ObjId: Serialize<LE, W>,
-	  &'a PrivateChatMessageResponseCode: Serialize<LE, W> {
+impl<'a, W: Write + LEWrite> Serialize<LE, W> for &'a PrivateChatMessage
+where
+	u8: Serialize<LE, W>,
+	u16: Serialize<LE, W>,
+	u32: Serialize<LE, W>,
+	&'a LuWString33: Serialize<LE, W>,
+	ObjId: Serialize<LE, W>,
+	&'a PrivateChatMessageResponseCode: Serialize<LE, W>,
+{
 	fn serialize(self, writer: &mut W) -> Res<()> {
 		LEWrite::write(writer, &self.chat_channel)?;
 		let mut str_len = self.message.len();

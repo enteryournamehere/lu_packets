@@ -7,7 +7,11 @@ use crate::common::{ObjId, OBJID_EMPTY};
 
 use crate::world::{Lot, LOT_NULL, Quaternion, Vector3};
 use crate::world::amf3::Amf3;
-pub use super::{EquipInventory, InventoryType, KillType, UnEquipInventory, MissionState, PetNotificationType, MoveItemInInventory, MoveInventoryBatch, RemoveItemFromInventory, SetIgnoreProjectileCollision, ModifyPlayerZoneStatistic};
+pub use super::{
+	EquipInventory, InventoryType, KillType, UnEquipInventory, MissionState, PetNotificationType,
+	MoveItemInInventory, MoveInventoryBatch, RemoveItemFromInventory, SetIgnoreProjectileCollision,
+	ModifyPlayerZoneStatistic,
+};
 use super::{GmString, GmWString};
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
